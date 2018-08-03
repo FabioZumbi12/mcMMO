@@ -3,15 +3,10 @@ package com.gmail.nossr50.config.experience;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.GrassSpecies;
 import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
-import org.bukkit.material.LongGrass;
-import org.bukkit.material.MaterialData;
-import org.bukkit.material.Tree;
+import org.bukkit.block.data.BlockData;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
@@ -190,26 +185,53 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public double getCombatXP(EntityType entity) { return config.getDouble("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_")); }
     public double getAnimalsXP(EntityType entity) { return config.getDouble("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_"), getAnimalsXP()); }
     public double getAnimalsXP() { return config.getDouble("Experience.Combat.Multiplier.Animals", 1.0); }
+    public boolean hasCombatXP(EntityType entity) {return config.contains("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_")); }
 
     /* Materials  */
-    public int getXp(SkillType skill, MaterialData data)
+    public int getXp(SkillType skill, Material data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getFriendlyConfigMaterialDataString(data);
-        String noDataString = baseString + StringUtils.getPrettyItemString(data.getItemType());
+        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
         if (config.contains(explicitString))
             return config.getInt(explicitString);
-        return config.getInt(noDataString, 0);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
+        if (config.contains(friendlyString))
+            return config.getInt(friendlyString);
+        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
+        if (config.contains(wildcardString))
+            return config.getInt(wildcardString);
+        return 0;
     }
-    
-    public boolean isSkillBlock(SkillType skill, MaterialData data)
+
+    /* Materials  */
+    public int getXp(SkillType skill, BlockData data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getFriendlyConfigMaterialDataString(data);
-        String noDataString = baseString + StringUtils.getPrettyItemString(data.getItemType());
+        String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
+        if (config.contains(explicitString))
+            return config.getInt(explicitString);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigBlockDataString(data);
+        if (config.contains(friendlyString))
+            return config.getInt(friendlyString);
+        String wildcardString = baseString + StringUtils.getWildcardConfigBlockDataString(data);
+        if (config.contains(wildcardString))
+            return config.getInt(wildcardString);
+        return 0;
+    }
+    
+    public boolean isSkillBlock(SkillType skill, BlockData data)
+    {
+        String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
+        String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
         if (config.contains(explicitString))
             return true;
-        return config.contains(noDataString);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigBlockDataString(data);
+        if (config.contains(friendlyString))
+            return true;
+        String wildcardString = baseString + StringUtils.getWildcardConfigBlockDataString(data);
+        if (config.contains(wildcardString))
+            return true;
+        return false;
     }
 
     /* Acrobatics */

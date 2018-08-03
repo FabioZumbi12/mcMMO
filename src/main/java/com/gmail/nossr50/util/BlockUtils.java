@@ -1,22 +1,14 @@
 package com.gmail.nossr50.util;
 
-import java.util.HashSet;
-
-import org.bukkit.CropState;
-import org.bukkit.Material;
-import org.bukkit.NetherWartsState;
-import org.bukkit.block.BlockState;
-import org.bukkit.material.CocoaPlant;
-import org.bukkit.material.CocoaPlant.CocoaPlantSize;
-import org.bukkit.material.Crops;
-import org.bukkit.material.NetherWarts;
-import org.bukkit.material.SmoothBrick;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
+import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+
+import java.util.HashSet;
 
 public final class BlockUtils {
 
@@ -43,32 +35,54 @@ public final class BlockUtils {
      */
     public static boolean canActivateAbilities(BlockState blockState) {
         switch (blockState.getType()) {
-            case BED_BLOCK :
+            case BLACK_BED:
+            case BLUE_BED:
+            case BROWN_BED:
+            case CYAN_BED:
+            case GRAY_BED:
+            case GREEN_BED:
+            case LIGHT_BLUE_BED:
+            case LIGHT_GRAY_BED:
+            case LIME_BED:
+            case MAGENTA_BED:
+            case ORANGE_BED:
+            case PINK_BED:
+            case PURPLE_BED:
+            case RED_BED:
+            case WHITE_BED:
+            case YELLOW_BED:
             case BREWING_STAND :
             case BOOKSHELF :
-            case BURNING_FURNACE :
-            case CAKE_BLOCK :
+            case CAKE:
             case CHEST :
             case DISPENSER :
-            case ENCHANTMENT_TABLE :
+            case ENCHANTING_TABLE:
             case ENDER_CHEST :
-            case FENCE_GATE :
+            case OAK_FENCE_GATE:
             case ACACIA_FENCE_GATE :
             case DARK_OAK_FENCE_GATE :
             case SPRUCE_FENCE_GATE :
             case BIRCH_FENCE_GATE :
             case JUNGLE_FENCE_GATE :
             case FURNACE :
-            case IRON_DOOR_BLOCK :
             case JUKEBOX :
             case LEVER :
             case NOTE_BLOCK :
             case STONE_BUTTON :
-            case WOOD_BUTTON :
-            case TRAP_DOOR :
+            case OAK_BUTTON:
+            case BIRCH_BUTTON:
+            case ACACIA_BUTTON:
+            case DARK_OAK_BUTTON:
+            case JUNGLE_BUTTON:
+            case SPRUCE_BUTTON:
+            case ACACIA_TRAPDOOR:
+            case BIRCH_TRAPDOOR:
+            case DARK_OAK_TRAPDOOR:
+            case JUNGLE_TRAPDOOR:
+            case OAK_TRAPDOOR:
+            case SPRUCE_TRAPDOOR:
             case WALL_SIGN :
-            case WOODEN_DOOR :
-            case WORKBENCH :
+            case CRAFTING_TABLE:
             case BEACON :
             case ANVIL :
             case DROPPER :
@@ -76,18 +90,35 @@ public final class BlockUtils {
             case TRAPPED_CHEST :
             case IRON_DOOR :
             case IRON_TRAPDOOR :
+            case OAK_DOOR:
             case ACACIA_DOOR :
             case SPRUCE_DOOR :
             case BIRCH_DOOR :
             case JUNGLE_DOOR :
             case DARK_OAK_DOOR :
-            case FENCE :
+            case OAK_FENCE:
             case ACACIA_FENCE :
             case DARK_OAK_FENCE :
             case BIRCH_FENCE :
             case JUNGLE_FENCE :
             case SPRUCE_FENCE :
             case ARMOR_STAND :
+            case BLACK_SHULKER_BOX :
+            case BLUE_SHULKER_BOX :
+            case BROWN_SHULKER_BOX :
+            case CYAN_SHULKER_BOX :
+            case GRAY_SHULKER_BOX :
+            case GREEN_SHULKER_BOX :
+            case LIGHT_BLUE_SHULKER_BOX :
+            case LIME_SHULKER_BOX :
+            case MAGENTA_SHULKER_BOX :
+            case ORANGE_SHULKER_BOX :
+            case PINK_SHULKER_BOX :
+            case PURPLE_SHULKER_BOX :
+            case RED_SHULKER_BOX :
+            case LIGHT_GRAY_SHULKER_BOX:
+            case WHITE_SHULKER_BOX :
+            case YELLOW_SHULKER_BOX :
                 return false;
 
             default :
@@ -103,7 +134,7 @@ public final class BlockUtils {
      * @return true if the block is an ore, false otherwise
      */
     public static boolean isOre(BlockState blockState) {
-        return MaterialUtils.isOre(blockState.getData());
+        return MaterialUtils.isOre(blockState.getBlockData());
     }
 
     /**
@@ -120,11 +151,11 @@ public final class BlockUtils {
             case GRASS_PATH :
                 return true;
 
-            case SMOOTH_BRICK :
-                return ((SmoothBrick) blockState.getData()).getMaterial() == Material.STONE;
+            case STONE_BRICKS:
+                return true;
 
-            case COBBLE_WALL :
-                return blockState.getRawData() == (byte) 0x0;
+            case COBBLESTONE_WALL:
+                return true;
 
             default :
                 return false;
@@ -139,8 +170,9 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
-        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.HERBALISM, blockState.getData()))
+        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.HERBALISM, blockState.getBlockData())) {
             return true;
+        }
 
         return mcMMO.getModManager().isCustomHerbalismBlock(blockState);
     }
@@ -154,7 +186,7 @@ public final class BlockUtils {
      *         otherwise
      */
     public static Boolean affectedBySuperBreaker(BlockState blockState) {
-        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.MINING, blockState.getData()))
+        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.MINING, blockState.getBlockData()))
             return true;
 
         return isOre(blockState) || mcMMO.getModManager().isCustomMiningBlock(blockState);
@@ -169,7 +201,7 @@ public final class BlockUtils {
      *         otherwise
      */
     public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
-        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.EXCAVATION, blockState.getData()))
+        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.EXCAVATION, blockState.getBlockData()))
             return true;
         return mcMMO.getModManager().isCustomExcavationBlock(blockState);
     }
@@ -182,7 +214,7 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(BlockState blockState) {
-        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.WOODCUTTING, blockState.getData()))
+        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.WOODCUTTING, blockState.getBlockData()))
             return true;
         return mcMMO.getModManager().isCustomLog(blockState);
     }
@@ -196,8 +228,12 @@ public final class BlockUtils {
      */
     public static boolean isLeaves(BlockState blockState) {
         switch (blockState.getType()) {
-            case LEAVES :
-            case LEAVES_2 :
+            case OAK_LEAVES:
+            case ACACIA_LEAVES:
+            case BIRCH_LEAVES:
+            case DARK_OAK_LEAVES:
+            case JUNGLE_LEAVES:
+            case SPRUCE_LEAVES:
                 return true;
 
             default :
@@ -236,7 +272,7 @@ public final class BlockUtils {
             case DIRT :
             case GRASS :
             case GRASS_PATH :
-            case SOIL :
+            case FARMLAND:
                 return false;
 
             default :
@@ -254,8 +290,8 @@ public final class BlockUtils {
      */
     public static boolean affectedByBlockCracker(BlockState blockState) {
         switch (blockState.getType()) {
-            case SMOOTH_BRICK :
-                return ((SmoothBrick) blockState.getData()).getMaterial() == Material.STONE;
+            case STONE_BRICKS:
+                return true;
 
             default :
                 return false;
@@ -297,7 +333,7 @@ public final class BlockUtils {
     public static boolean isPistonPiece(BlockState blockState) {
         Material type = blockState.getType();
 
-        return type == Material.PISTON_MOVING_PIECE || type == Material.AIR;
+        return type == Material.MOVING_PISTON || type == Material.AIR;
     }
 
     /**
@@ -305,12 +341,12 @@ public final class BlockUtils {
      *
      * @return HashSet with the IDs of every transparent block
      */
-    public static HashSet<Byte> getTransparentBlocks() {
-        HashSet<Byte> transparentBlocks = new HashSet<Byte>();
+    public static HashSet<Material> getTransparentBlocks() {
+        HashSet<Material> transparentBlocks = new HashSet<Material>();
 
         for (Material material : Material.values()) {
             if (material.isTransparent()) {
-                transparentBlocks.add((byte) material.getId());
+                transparentBlocks.add(material);
             }
         }
 

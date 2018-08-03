@@ -1,27 +1,22 @@
 package com.gmail.nossr50.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
-import com.gmail.nossr50.util.adapter.SoundAdapter;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class ChimaeraWing {
     private static McMMOPlayer mcMMOPlayer;
@@ -136,7 +131,7 @@ public final class ChimaeraWing {
         mcMMOPlayer.setTeleportCommenceLocation(null);
 
         if (Config.getInstance().getChimaeraSoundEnabled()) {
-            player.playSound(location, SoundAdapter.BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
+            player.playSound(location, Sound.ENTITY_BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
         }
 
         player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
@@ -161,7 +156,7 @@ public final class ChimaeraWing {
         Material ingredient = Config.getInstance().getChimaeraItem();
         int amount = Config.getInstance().getChimaeraRecipeCost();
 
-        ShapelessRecipe chimeraWing = new ShapelessRecipe(getChimaeraWing(1));
+        ShapelessRecipe chimeraWing = new ShapelessRecipe(new NamespacedKey(mcMMO.p, "Chimera"), getChimaeraWing(1));
         chimeraWing.addIngredient(amount, ingredient);
         return chimeraWing;
     }

@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
@@ -54,12 +55,16 @@ public class PrimitiveChunkStore implements ChunkStore {
 
     @Override
     public void setTrue(int x, int y, int z) {
+        if (y >= store[0][0].length || y < 0)
+            return;
         store[x][z][y] = true;
         dirty = true;
     }
 
     @Override
     public void setFalse(int x, int y, int z) {
+        if (y >= store[0][0].length || y < 0)
+            return;
         store[x][z][y] = false;
         dirty = true;
     }
@@ -68,7 +73,7 @@ public class PrimitiveChunkStore implements ChunkStore {
     public boolean isEmpty() {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                for (int y = 0; y < store.length; y++) {
+                for (int y = 0; y < store[0][0].length; y++) {
                     if (store[x][z][y]) {
                         return false;
                     }
@@ -82,7 +87,7 @@ public class PrimitiveChunkStore implements ChunkStore {
     public void copyFrom(ChunkletStore otherStore) {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                for (int y = 0; y < store.length; y++) {
+                for (int y = 0; y < store[0][0].length; y++) {
                     store[x][z][y] = otherStore.isTrue(x, y, z);
                 }
             }
@@ -128,10 +133,10 @@ public class PrimitiveChunkStore implements ChunkStore {
 
     private void fixArray() {
         boolean[][][] temp = this.store;
-        this.store = new boolean[16][16][temp.length];
+        this.store = new boolean[16][16][Bukkit.getWorld(worldUid).getMaxHeight()];
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                for (int y = 0; y < temp.length; y++) {
+                for (int y = 0; y < store[0][0].length; y++) {
                     try {
                         store[x][z][y] = temp[x][y][z];
                     }

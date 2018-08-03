@@ -102,8 +102,10 @@ Scoreboard:
             LevelUp_Time: 5
 
 Mob_Healthbar:
-    # Display_Type: Default display for mob health bars - HEARTS, BAR, or DISABLED
+    # Enabled: Whether or not the feature is enabled at all
+    # Display_Type: Per player Default display for mob health bars - HEARTS, BAR, or DISABLED
     # Display_Time: Amount of time (in seconds) to display. To display permanently, set to -1
+    Enabled: true
     Display_Type: HEARTS
     Display_Time: 3
 
@@ -328,6 +330,7 @@ Skills:
         Override_Vanilla_Treasures: true
         # Always catch fish, even when treasure is found
         Extra_Fish: false
+        Lure_Modifier: 4.0
     Herbalism:
         Level_Cap: 0
         Prevent_AFK_Leveling: true
@@ -373,7 +376,7 @@ Skills:
                 Summon_Length: 240
                 Summon_Max_Amount: 10
             Ocelot:
-                Item_Material: RAW_FISH
+                Item_Material: COD
                 Item_Amount: 10
                 Summon_Amount: 1
                 Summon_Length: 240
@@ -410,7 +413,6 @@ Double_Drops:
     Herbalism:
         Beetroot_Block: true
         Brown_Mushroom: true
-        Beetroot_Block: true
         Cactus: true
         Carrot: true
         Cocoa: true
@@ -424,7 +426,7 @@ Double_Drops:
         Sugar_Cane_Block: true
         Vine: true
         Water_Lily: true
-        Yellow_Flower: true
+        Dandelion: true
     Mining:
         Coal_Ore: true
         Diamond_Ore: true
@@ -442,12 +444,12 @@ Double_Drops:
         Sandstone: true
         Stone: true
     Woodcutting:
-        Acacia: true
-        Birch: true
-        Dark_Oak: true
-        Generic: true
-        Jungle: true
-        Redwood: true
+        Acacia_Wood: true
+        Birch_Wood: true
+        Dark_Oak_Wood: true
+        Oak_Wood: true
+        Jungle_Wood: true
+        Spruce_Wood: true
 
 #
 #  Settings for commands
